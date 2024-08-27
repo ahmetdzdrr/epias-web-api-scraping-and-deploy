@@ -31,7 +31,7 @@ class EpiasClient:
         if response.status_code == 201:
             ticket_location = response.headers['Location']
             self.ticket_key = ticket_location.split('/')[-1]
-            print(f"Ticket key başarıyla alındı: {self.ticket_key}")
+            print(f"Ticket key başarıyla alındı")
         else:
             print(f"Ticket alma işlemi başarısız oldu: {response.status_code}")
             print("Hata mesajı:", response.text)
