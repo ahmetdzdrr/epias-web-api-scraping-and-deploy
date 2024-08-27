@@ -72,7 +72,7 @@ def main():
             <a href="https://github.com/ahmetdzdrr" target="_blank">
                 <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
             </a>
-            <a href="https://linkedin.com/in/ahmet-dizdar" target="_blank">
+            <a href="https://linkedin.com/in/ahmet-dizdarr" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn Logo">
             </a>
             <br>
