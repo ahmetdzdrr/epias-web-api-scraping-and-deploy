@@ -45,5 +45,40 @@ def main():
                     st.subheader(f"{selected_sehir} - {selected_ilce} İçin Elektrik Kesinti Saatleri")
                     st.dataframe(filtered_data_ilce.reset_index(drop=True))
 
+    st.markdown("""
+        <style>
+        .footer {
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: transparent;
+            z-index: 1000;
+        }
+        .footer a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #0073e6;
+        }
+        .footer img {
+            height: 30px;
+            margin-bottom: 29px;
+            vertical-align: middle;
+        }
+        </style>
+        <div class="footer">
+            <a href="https://github.com/ahmetdzdrr" target="_blank">
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
+            </a>
+            <a href="https://linkedin.com/in/ahmet-dizdar" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn Logo">
+            </a>
+            <br>
+            <span>Powered by Ahmet Dizdar</span>
+        </div>
+    """, unsafe_allow_html=True)
+
 if __name__ == "__main__":
     main()
