@@ -3,11 +3,9 @@ import time
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
 
 class EpiasClient:
     def __init__(self, output_folder="db"):
-        load_dotenv()
         self.username = os.getenv("USERNAME")
         self.password = os.getenv("PASSWORD")
         self.ticket_key = None
