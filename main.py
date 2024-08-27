@@ -25,7 +25,9 @@ class EpiasClient:
         }
         
         response = requests.post(self.ticket_url, headers=headers, data=data)
-        
+        print("Username:", self.username)
+        print("Password:", self.password)
+
         if response.status_code == 201:
             ticket_location = response.headers['Location']
             self.ticket_key = ticket_location.split('/')[-1]
