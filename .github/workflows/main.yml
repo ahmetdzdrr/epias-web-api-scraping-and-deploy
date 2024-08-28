@@ -31,3 +31,11 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
           python main.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "a.dizdar00@gmail.com"
+          git config --global user.name "ahmetdzdrr"
+          git add .
+          git commit -m "Update data"
+          git push
