@@ -36,8 +36,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
         run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
+          git config --global user.email "${{ secrets.USERNAME }}"
+          git config --global user.name "ahmetdzdrr"
           git add .
           git commit -m "Update data"
           git push https://${GITHUB_TOKEN}@github.com/ahmetdzdrr/epias-web-api-scraping-and-deploy.git
