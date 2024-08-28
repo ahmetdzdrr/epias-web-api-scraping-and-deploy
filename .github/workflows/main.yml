@@ -40,4 +40,4 @@ jobs:
           git config --global user.name "Your Name"
           git add .
           git commit -m "Update data"
-          git push
+          git push https://${GITHUB_TOKEN}@github.com/ahmetdzdrr/epias-web-api-scraping-and-deploy.git
