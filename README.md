@@ -1,5 +1,8 @@
 # EPİAŞ Web API Scraping and Deployment
 
+![Screenshot 2024-08-28 at 14 52 30](https://github.com/user-attachments/assets/03dc74bf-fa10-4962-8182-84ca1515745d)
+
+
 This repository provides a solution to scrape data from the EPİAŞ (Energy Exchange Istanbul) API, process the data, and deploy the results using Docker, GitHub Actions, and Streamlit Cloud.
 
 ## Table of Contents
