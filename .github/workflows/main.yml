@@ -32,7 +32,13 @@ jobs:
         run: |
           python main.py
 
+      - name: Check for changes
+        id: changes
+        run: |
+          git diff --quiet || echo "changes detected"
+
       - name: Commit and push changes
+        if: steps.changes.outputs.result == 'changes detected'
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
         run: |
