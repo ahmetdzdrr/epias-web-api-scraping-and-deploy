@@ -63,7 +63,7 @@ def main():
         .footer {
             text-align: center;
             padding: 20px;
-            position: absolute;
+            position: fixed;
             bottom: 0;
             left: 0;
             top: 0;
