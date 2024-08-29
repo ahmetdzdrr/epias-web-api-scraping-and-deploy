@@ -2,7 +2,6 @@
 
 ![Screenshot 2024-08-28 at 14 52 30](https://github.com/user-attachments/assets/03dc74bf-fa10-4962-8182-84ca1515745d)
 
-
 This repository provides a solution to scrape data from the EPİAŞ (Energy Exchange Istanbul) API, process the data, and deploy the results using Docker, GitHub Actions, and Streamlit Cloud.
 
 ## Table of Contents
@@ -22,11 +21,17 @@ This repository provides a solution to scrape data from the EPİAŞ (Energy Exch
 
 ## Project Overview
 
+![Screenshot 2024-08-29 at 15 15 27](https://github.com/user-attachments/assets/01131e56-1902-4a82-99f6-d7906c9a0f78)
+
+
 This project focuses on retrieving data from the EPİAŞ API using a Python script that sends a POST request with a username and password to obtain a ticket key. This key is then used to make further requests to retrieve specific data. The collected data is processed, filtered, and displayed using a Streamlit application. The entire process is automated and deployed using Docker and GitHub Actions.
+
+The project also integrates OpenStreetMap API to enrich the data with geographical coordinates (latitude and longitude) for each city and district.
 
 ## Features
 
 - **Data Scraping**: Retrieve data from EPİAŞ API using a secure POST request.
+- **Geographical Data Enrichment**: Use OpenStreetMap API to add latitude and longitude for each city and district.
 - **Data Filtering**: Filter the retrieved data based on city and district.
 - **Automated Deployment**: Use GitHub Actions to schedule the scraping script to run every 24 hours and update the data automatically.
 - **Streamlit Integration**: Display the filtered data in a user-friendly manner using a Streamlit application.
@@ -38,6 +43,7 @@ This project focuses on retrieving data from the EPİAŞ API using a Python scri
 - Docker
 - GitHub account
 - EPİAŞ API credentials (username, password)
+- An internet connection for accessing the OpenStreetMap API
 
 ## Installation
 
@@ -73,7 +79,7 @@ To manually run the scraping script:
 python main.py
 ```
 
-This will fetch the latest data from the EPİAŞ API and save it locally.
+This will fetch the latest data from the EPİAŞ API, enrich it with latitude and longitude data using OpenStreetMap API, and save it locally.
 
 ### Deploying the Streamlit Application
 
@@ -101,7 +107,7 @@ epias-web-api-scraping-and-deploy/
 
 ## GitHub Actions Workflow
 
-The repository includes a GitHub Actions workflow that automatically runs the `main.py` script every 24 hours. The data is fetched and saved to the `data/` directory. The workflow file is located in `.github/workflows/`.
+The repository includes a GitHub Actions workflow that automatically runs the `main.py` script every 24 hours. The data is fetched, enriched with geographical data, and saved to the `data/` directory. The workflow file is located in `.github/workflows/`.
 
 To view or modify the workflow:
 
@@ -151,3 +157,6 @@ Contributions are welcome! Please feel free to submit a Pull Request or open an 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+```
+
+Bu güncellemede, OpenStreetMap API entegrasyonunu vurgulamak ve bu API'nin nasıl kullanıldığını açıklamak amacıyla `Project Overview`, `Features`, `Usage`, ve `GitHub Actions Workflow` bölümlerine eklemeler yapıldı. Bu sayede proje hakkında daha detaylı bilgi veriliyor.
