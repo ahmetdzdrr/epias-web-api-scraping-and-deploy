@@ -72,6 +72,32 @@ class EpiasClient:
             print("Hata mesajı:", response.text)
         print("Tüm veriler başarıyla indirildi.")
     
+    def get_lat_lon(self, sehir, ilce):
+        url = f"https://nominatim.openstreetmap.org/search?city={ilce}&state={sehir}&country=Turkey&format=json"
+        headers = {
+            "User-Agent": "YourAppName/1.0 (your.email@example.com)"
+        }
+        response = requests.get(url, headers=headers)
+        time.sleep(1)
+        try:
+            response_json = response.json()
+            if response_json:
+                return response_json[0]["lat"], response_json[0]["lon"]
+            else:
+                return None, None
+        except ValueError:
+            print("JSON Decode Error: Invalid JSON response")
+            return None, None
+
+    def add_lat_lon_to_data(self, df):
+        df["Latitude"] = None
+        df["Longitude"] = None
+        for index, row in df.iterrows():
+            lat, lon = self.get_lat_lon(row["Şehir"], row["İlçe Adı"])
+            df.at[index, "Latitude"] = lat
+            df.at[index, "Longitude"] = lon
+        return df
+    
     def preprocessing(self):
         selected_columns = [
             "Şehir", "İlçe Adı", "Tarih", 
@@ -88,9 +114,12 @@ class EpiasClient:
                     df["Başlangıç Tarih - Saati"] = pd.to_datetime(df["Başlangıç Tarih - Saati"], format='%d.%m.%Y %H:%M', errors='coerce')
                     df["Bitiş Tarih - Saati"] = pd.to_datetime(df["Bitiş Tarih - Saati"], format='%d.%m.%Y %H:%M', errors='coerce')
                     df["İlçe Adı"] = df["İlçe Adı"].apply(lambda x: x.split('/')[0].strip() if '/' in x else x)
-                    df.replace({'İSTANBUL-AVRUPA': 'ISTANBUL', 'İSTANBUL-ASYA': 'ISTANBUL'}, inplace=True)
+                    df.replace({'İSTANBUL-AVRUPA': 'İSTANBUL', 'İSTANBUL-ASYA': 'İSTANBUL'}, inplace=True)
+                    df['İlçe Adı'] = df['İlçe Adı'].replace('Sivas Merkez', 'Merkez')
+                    df = self.add_lat_lon_to_data(df)
                     df['Şehir'] = df['Şehir'].str.replace('Ç', 'C').str.replace('İ', 'I').str.replace('Ş', 'S')
                     df.sort_values(by='Şehir', ascending=True, inplace=True)
+                    
                 except pd.errors.ParserError as e:
                     print(f"Hata oluştu: {file_name}")
                     print(e)
