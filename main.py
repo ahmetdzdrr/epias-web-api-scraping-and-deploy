@@ -26,15 +26,15 @@ class EpiasClient:
         
         response = requests.post(self.ticket_url, headers=headers, data=data)
         if self.username and self.password is not None:
-            print("Username defined\nPassword defined")
+            print("Username defined..\nPassword defined..")
 
         if response.status_code == 201:
             ticket_location = response.headers['Location']
             self.ticket_key = ticket_location.split('/')[-1]
-            print(f"Ticket key başarıyla alındı")
+            print(f"Ticket key recieved successfully..")
         else:
-            print(f"Ticket alma işlemi başarısız oldu: {response.status_code}")
-            print("Hata mesajı:", response.text)
+            print(f"Ticket key receive is failed: {response.status_code}")
+            print("Error message:", response.text)
             self.ticket_key = None
     
     def make_request(self, base_url, period):
@@ -48,22 +48,19 @@ class EpiasClient:
             response = requests.post(base_url, json=data, headers=headers, stream=True)
             return response
         except requests.exceptions.RequestException as e:
-            print(f"İstek sırasında bir hata oluştu: {e}")
+            print(f"An error occurred during the request: {e}")
             return None
     
     def save_response_to_file(self, response, file_name):
         with open(file_name, "wb") as f:
             for chunk in response.iter_content(chunk_size=1024):
                 f.write(chunk)
-        print(f"{file_name} dosyası başarıyla kaydedildi.")
+        print(f"{file_name} file saved successfully.")
     
     def download_data(self, index, base_url, start_date):
         current_date = start_date
         period = current_date.strftime("%Y-%m-%dT00:00:00+03:00")
-        if self.post_list[index] == 'planned':
-            print(f"{pd.to_datetime(current_date).strftime('%Y-%m-%d')} planlı kesinti verileri çekiliyor..")
-        else:
-            print(f"{pd.to_datetime(current_date).strftime('%Y-%m-%d')} plansız kesinti verileri çekiliyor..")
+        print(f"{pd.to_datetime(current_date).strftime('%Y-%m-%d')} {self.post_list[index]} outage data is scraping..")
         file_name = f"{self.output_folder}/data_{self.post_list[index]}.csv"
         response = self.make_request(base_url, period)
 
@@ -71,9 +68,9 @@ class EpiasClient:
             self.save_response_to_file(response, file_name)
             time.sleep(5)
         elif response:
-            print(f"İstek başarısız oldu: {response.status_code} ({period})")
-            print("Hata mesajı:", response.text)
-        print("Tüm veriler başarıyla indirildi.")
+            print(f"Request is failed: {response.status_code} ({period})")
+            print("Error message:", response.text)
+        print("All data downloaded successfully.")
     
     def get_lat_lon(self, sehir, ilce):
         url = f"https://nominatim.openstreetmap.org/search?city={ilce}&state={sehir}&country=Turkey&format=json"
@@ -115,10 +112,10 @@ class EpiasClient:
             output_file = f'{self.output_folder}/{file_name}'
             final_df.to_csv(output_file, index=False)
             
-            print(f"Düzenlenmiş dosya başarıyla kaydedildi: {output_file}")
+            print(f"Edited file saved successfully: {output_file}")
         
         except Exception as e:
-            print(f"Hata oluştu: {file_name}")
+            print(f"An error ocurred: {file_name}")
             print(e)
     
     def preprocessing(self, file_name):
@@ -146,10 +143,10 @@ class EpiasClient:
                 df = self.add_lat_lon_to_data(df)
                 output_file = f'{self.output_folder}/{file_name}'
                 df.to_csv(output_file, index=False)
-                print(f"Düzenlenmiş dosya başarıyla kaydedildi: {output_file}")
+                print(f"Edited file saved successfully: {output_file}")
                     
         except pd.errors.ParserError as e:
-            print(f"Hata oluştu: {file_name}")
+            print(f"An error ocurred: {file_name}")
             print(e)
 
     
@@ -167,7 +164,7 @@ class EpiasClient:
                 file_name = f"data_{value}.csv"
                 self.preprocessing(file_name)
             else:
-                print("Ticket key alınamadığı için işlemler gerçekleştirilemedi.")
+                print("Transactions could not be completed because the ticket key could not be obtained..")
 
 if __name__ == "__main__":
     start_date = datetime.now() + timedelta(days=1)
