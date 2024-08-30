@@ -76,10 +76,9 @@ def main():
         .footer {
             text-align: center;
             padding: 20px;
-            position: fixed;
+            position: relative;
             bottom: 0;
             left: 0;
-            top: 0;
             right: 0;
             width: 100%;
             background-color: transparent;
