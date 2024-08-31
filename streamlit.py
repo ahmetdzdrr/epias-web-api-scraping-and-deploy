@@ -33,6 +33,7 @@ def main():
             st.info("Lütfen bir şehir seçiniz.")
         else:
             filtered_data_sehir = df[df["Şehir"] == selected_sehir]
+            filtered_data_sehir = filtered_data_sehir.dropna(axis=0)
 
             if filtered_data_sehir.empty:
                 st.error(f"{selected_sehir} ile ilgili veri bulunamadı.")
