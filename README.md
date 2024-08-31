@@ -158,5 +158,3 @@ Contributions are welcome! Please feel free to submit a Pull Request or open an 
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 ```
-
-Bu güncellemede, OpenStreetMap API entegrasyonunu vurgulamak ve bu API'nin nasıl kullanıldığını açıklamak amacıyla `Project Overview`, `Features`, `Usage`, ve `GitHub Actions Workflow` bölümlerine eklemeler yapıldı. Bu sayede proje hakkında daha detaylı bilgi veriliyor.
