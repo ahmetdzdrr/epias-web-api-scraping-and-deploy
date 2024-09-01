@@ -14,7 +14,6 @@ def get_unique_values(df, column_name):
 def main():
     st.title("EPİAŞ Elektrik Kesintisi Verileri")
 
-    # Kesinti Tipi Seçimi
     kesinti_tipi = st.selectbox("Kesinti Tipini Seçin", ["None", "Planlı Kesinti Verileri", "Plansız Kesinti Verileri"], index=0)
 
     if kesinti_tipi == "None":
@@ -24,10 +23,24 @@ def main():
         file_name = "data_planned.csv" if kesinti_tipi == "Planlı Kesinti Verileri" else "data_unplanned.csv"
         file_path = os.path.join(output_folder, file_name)
         df = load_data(file_path)
-        
-        # Şehir Seçimi
-        unique_sehir = get_unique_values(df, 'Şehir')
-        selected_sehir = st.selectbox("Şehir Seçin", unique_sehir, index=0)
+
+        turkey_cities = [
+            "None",
+            "ADANA", "ADIYAMAN", "AFYONKARAHISAR", "AĞRI", "AKSARAY", "AMASYA", "ANKARA",
+            "ANTALYA", "ARTVIN", "AYDIN", "BALIKESIR", "BARTIN", "BATMAN", "BAYBURT",
+            "BILECIK", "BINGOL", "BITLIS", "BOLU", "BURDUR", "BURSA", "CANAKKALE",
+            "CANKIRI", "CORUM", "DENIZLI", "DIYARBAKIR", "DUZCE", "EDIRNE", "ELAZIG",
+            "ERZINCAN", "ERZURUM", "ESKISEHIR", "GAZIANTEP", "GIRESUN", "GUMUSHANE",
+            "HAKKARI", "HATAY", "IGDIR", "ISPARTA", "ISTANBUL", "IZMIR", "KAHRAMANMARAS",
+            "KARABUK", "KARAMAN", "KARS", "KASTAMONU", "KAYSERI", "KIRIKKALE", "KIRKLARELI",
+            "KIRSEHIR", "KOCAELI", "KONYA", "KUTAHYA", "MALATYA", "MANISA", "MARDIN", 
+            "MUGLA", "MUS", "NEVSEHIR", "NIGDE", "ORDU", "OSMANIYE", "RIZE",
+            "SAKARYA", "SAMSUN", "SIIRT", "SINOP", "SIVAS", "SANLIURFA", "SIRNAK",
+            "TEKIRDAG", "TOKAT", "TRABZON", "TUNCELI", "USAK", "VAN", "YALOVA",
+            "YOZGAT", "ZONGULDAK"
+        ]
+
+        selected_sehir = st.selectbox("Şehir Seçin", turkey_cities, index=0)
 
         if selected_sehir == 'None':
             st.info("Lütfen bir şehir seçiniz.")
@@ -36,7 +49,7 @@ def main():
             filtered_data_sehir = filtered_data_sehir.dropna(axis=0)
 
             if filtered_data_sehir.empty:
-                st.error(f"{selected_sehir} ile ilgili veri bulunamadı.")
+                st.error(f"{selected_sehir} ile ilgili kesinti verisi bulunamadı.")
             else:
                 st.subheader(f"{selected_sehir} İçin {kesinti_tipi}")
 
@@ -53,7 +66,7 @@ def main():
                                 <strong>Bitiş:</strong> {row['Bitiş Tarih - Saati']}<br>
                                 <strong>Bölgeler:</strong> {row['Bölgeler(Semt-Mahalle)']}
                             </div>
-                        """
+                            """
                         else:
                             popup_html = f"""
                             <div style="font-size: 14px; color: #333;">
@@ -61,7 +74,7 @@ def main():
                                 <strong>Yer:</strong> {row['Şehir']} - {row['İlçe Adı']}<br>
                                 <strong>Kesinti Sayısı:</strong> {row['Kesinti Sayısı']}
                             </div>
-                        """
+                            """
                         folium.Marker(
                             location=[row["Latitude"], row["Longitude"]],
                             popup=folium.Popup(popup_html, max_width=300),
