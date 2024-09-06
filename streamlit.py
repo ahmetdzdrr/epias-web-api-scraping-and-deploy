@@ -124,6 +124,11 @@ def main():
             </a>
             <br>
             <span>Powered by</span><span class="name">Ahmet Dizdar</span>
+            <p align="center">
+            <a href="https://www.buymeacoffee.com/ahmetdizdar" target="_blank">
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=your-username&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff" alt="Buy Me A Coffee">
+            </a>
+            </p>
         </div>
         """, unsafe_allow_html=True)
 
