@@ -12,15 +12,15 @@ def get_unique_values(df, column_name):
     return ["None"] + df[column_name].unique().tolist()
 
 def main():
-    st.title("EPİAŞ Elektrik Kesintisi Verileri")
+    st.title("EPIAS Power Outage Data")
 
-    kesinti_tipi = st.selectbox("Kesinti Tipini Seçin", ["None", "Planlı Kesinti Verileri", "Plansız Kesinti Verileri"], index=0)
+    outage_type = st.selectbox("Select Outage Type", ["None", "Planned Outage Data", "Unplanned Outage Data"], index=0)
 
-    if kesinti_tipi == "None":
-        st.info("Lütfen kesinti tipini seçiniz.")
+    if outage_type == "None":
+        st.info("Please select the type of outage.")
     else:
         output_folder = "db"
-        file_name = "data_planned.csv" if kesinti_tipi == "Planlı Kesinti Verileri" else "data_unplanned.csv"
+        file_name = "data_planned.csv" if outage_type == "Planned Outage Data" else "data_unplanned.csv"
         file_path = os.path.join(output_folder, file_name)
         df = load_data(file_path)
 
@@ -40,18 +40,18 @@ def main():
             "YOZGAT", "ZONGULDAK"
         ]
 
-        selected_sehir = st.selectbox("Şehir Seçin", turkey_cities, index=0)
+        selected_sehir = st.selectbox("City", turkey_cities, index=0)
 
         if selected_sehir == 'None':
-            st.info("Lütfen bir şehir seçiniz.")
+            st.info("Please choose your city.")
         else:
             filtered_data_sehir = df[df["Şehir"] == selected_sehir]
             filtered_data_sehir = filtered_data_sehir.dropna(axis=0)
 
             if filtered_data_sehir.empty:
-                st.error(f"{selected_sehir} ile ilgili kesinti verisi bulunamadı.")
+                st.error(f"No outage data found for {selected_sehir}.")
             else:
-                st.subheader(f"{selected_sehir} İçin {kesinti_tipi}")
+                st.subheader(f"{outage_type} for {selected_sehir}")
 
                 if not filtered_data_sehir[['Latitude', 'Longitude']].dropna().empty:
                     lat_mean = filtered_data_sehir['Latitude'].mean()
@@ -59,20 +59,20 @@ def main():
                     m = folium.Map(location=[lat_mean, lon_mean], zoom_start=8)
 
                     for _, row in filtered_data_sehir.iterrows():
-                        if kesinti_tipi == 'Planlı Kesinti Verileri':
+                        if outage_type == 'Planned Outage Data':
                             popup_html = f"""
                             <div style="font-size: 14px; color: #333;">
-                                <strong>Başlangıç:</strong> {row['Başlangıç Tarih - Saati']}<br>
-                                <strong>Bitiş:</strong> {row['Bitiş Tarih - Saati']}<br>
-                                <strong>Bölgeler:</strong> {row['Bölgeler(Semt-Mahalle)']}
+                                <strong>Start:</strong> {row['Başlangıç Tarih - Saati']}<br>
+                                <strong>End:</strong> {row['Bitiş Tarih - Saati']}<br>
+                                <strong>Regions:</strong> {row['Bölgeler(Semt-Mahalle)']}
                             </div>
                             """
                         else:
                             popup_html = f"""
                             <div style="font-size: 14px; color: #333;">
-                                <strong>Tarih:</strong> {row['Tarih']}<br>
-                                <strong>Yer:</strong> {row['Şehir']} - {row['İlçe Adı']}<br>
-                                <strong>Kesinti Sayısı:</strong> {row['Kesinti Sayısı']}
+                                <strong>Date:</strong> {row['Tarih']}<br>
+                                <strong>Place:</strong> {row['Şehir']} - {row['İlçe Adı']}<br>
+                                <strong>Number of Interruptions:</strong> {row['Kesinti Sayısı']}
                             </div>
                             """
                         folium.Marker(
@@ -83,7 +83,7 @@ def main():
 
                     st_folium(m, width=700, height=500)
                 else:
-                    st.warning("Seçilen şehir için geçerli enlem ve boylam verisi bulunamadı.")
+                    st.warning("No valid latitude and longitude data found for the selected city.")
 
     st.markdown("""
         <style>
